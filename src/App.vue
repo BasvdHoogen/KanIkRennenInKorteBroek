@@ -4,7 +4,8 @@ import TheWelcome from './components/TheWelcome.vue'
 
 <template>
   <main>
-    <h1 class="green">In korte broek rennen?</h1>
+    <img src="/man-running-emoji-258749.png" alt="man-running-emoji-with-short-pants" style="width:128px;height:128px;">
+    <h1 class="green">Kan ik in korte broek rennen?</h1>
     <TheWelcome />
   </main>
 </template>
