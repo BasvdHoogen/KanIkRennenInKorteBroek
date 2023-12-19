@@ -12,9 +12,6 @@ fetch("https://weerlive.nl/api/json-data-10min.php?key=bc398b12be&locatie=Eindho
     <div v-if="weatherData.gtemp > 8">
       <h3>JA!</h3>
       Trek je KORTE broek aan. De gevoelstemperatuur is {{ weatherData.gtemp }} °C
-      <br>
-      <div><img src="/man-running-emoji-258749.png" alt="man-running-emoji-with-short-pants"
-                style="width:128px;height:128px;"></div>
     </div>
     <div v-else-if="weatherData.gtemp < 8">
       <h3>Nee!</h3>
@@ -27,18 +24,21 @@ fetch("https://weerlive.nl/api/json-data-10min.php?key=bc398b12be&locatie=Eindho
     <br>
     <br>
     <div>
-      <h3>Weer van {{weatherData.plaats}}:</h3>
+      <h4>Het weer in {{ weatherData.plaats }}:</h4>
       Temperatuur: {{ weatherData.temp }}<br>
       gevoelstemperatuur: {{ weatherData.gtemp }}<br>
       Samenvatting: {{ weatherData.samenv }}<br>
-
     </div>
   </div>
-
 </template>
 
 <style scoped>
 h3 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+h4 {
   font-size: 1.2rem;
   font-weight: 500;
   margin-bottom: 0.4rem;
