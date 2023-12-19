@@ -3,7 +3,8 @@ import {ref} from 'vue'
 
 const weather = ref(null)
 const weatherData = ref(null)
-fetch("https://weerlive.nl/api/json-data-10min.php?key=bc398b12be&locatie=Eindhoven").then((r) => r.json()).then(data => weatherData.value = data.liveweer[0])
+// fetch("https://weerlive.nl/api/json-data-10min.php?key=bc398b12be&locatie=Eindhoven").then((r) => r.json()).then(data => weatherData.value = data.liveweer[0])
+fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo").then((r) => r.json()).then(data => weatherData.value = data)
 
 </script>
 
