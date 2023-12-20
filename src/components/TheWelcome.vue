@@ -45,6 +45,7 @@ fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo").then((r) => r.j
       <div class="wave"></div>
       <div class="wave"></div>
     </div>
+    <div>We laden het weerbericht...</div>
   </div>
 </template>
 
