@@ -2,20 +2,20 @@
 import {ref} from 'vue'
 
 const weatherData = ref(null)
-// fetch("https://weerlive.nl/api/json-data-10min.php?key=bc398b12be&locatie=Eindhoven").then((r) => r.json()).then(data => weatherData.value = data.liveweer[0])
 fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo").then((r) => r.json()).then(data => weatherData.value = data)
+// fetch("https://api.open-meteo.com/v1/forecast?latitude=51.4408&longitude=5.4778&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=auto").then((r) => r.json()).then(data => weatherData.value = data)
 
 </script>
 
 <template>
   <div v-if="weatherData != null">
-    <div v-if="weatherData.gtemp > 8">
+    <div v-if="weatherData.current.apparent_temperature > 8">
       <h3>JA!</h3>
-      Trek je KORTE broek aan. De gevoelstemperatuur is {{ weatherData.gtemp }} °C
+      Trek je KORTE broek aan. De gevoelstemperatuur is {{ weatherData.current.apparent_temperature }} °C
     </div>
-    <div v-else-if="weatherData.gtemp < 8">
+    <div v-else-if="weatherData.current.apparent_temperature < 8">
       <h3>Nee!</h3>
-      Trek je LANGE broek aan. De gevoelstemperatuur is {{ weatherData.gtemp }} °C
+      Trek je LANGE broek aan. De gevoelstemperatuur is {{ weatherData.current.apparent_temperature }} °C
     </div>
     <div v-else>
       <h3>Helaas...</h3>
@@ -24,10 +24,13 @@ fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo").then((r) => r.j
     <br>
     <br>
     <div>
-      <h4>Het weer in {{ weatherData.plaats }}:</h4>
-      Temperatuur: {{ weatherData.temp }}<br>
-      gevoelstemperatuur: {{ weatherData.gtemp }}<br>
-      Samenvatting: {{ weatherData.samenv }}<br>
+      <h4>Het weer
+        <label v-if="weatherData.requestedLocation">in {{ weatherData.requestedLocation }}</label>
+        <label v-else>op coördinaat: {{ weatherData.latitude }}, {{ weatherData.longitude }}</label>
+      </h4>
+      Temperatuur: {{ weatherData.current.temperature_2m }}<br>
+      gevoelstemperatuur: {{ weatherData.current.apparent_temperature }}<br>
+      coordinaten: {{ weatherData.latitude }}, {{ weatherData.longitude }}
     </div>
   </div>
   <div v-else>
@@ -55,6 +58,7 @@ h3 {
   font-weight: 500;
   margin-bottom: 0.4rem;
 }
+
 h4 {
   font-size: 1.2rem;
   font-weight: 500;
@@ -66,6 +70,7 @@ h4 {
   justify-content: center;
   align-items: center;
 }
+
 .wave {
   width: 10px;
   height: 10px;
@@ -74,30 +79,39 @@ h4 {
   animation: wave 2s linear infinite;
   border-radius: 20px;
 }
+
 .wave:nth-child(2) {
   animation-delay: 0.2s;
 }
+
 .wave:nth-child(3) {
   animation-delay: 0.4s;
 }
+
 .wave:nth-child(4) {
   animation-delay: 0.6s;
 }
+
 .wave:nth-child(5) {
   animation-delay: 0.8s;
 }
+
 .wave:nth-child(6) {
   animation-delay: 1s;
 }
+
 .wave:nth-child(7) {
   animation-delay: 1.2s;
 }
+
 .wave:nth-child(8) {
   animation-delay: 1.4s;
 }
+
 .wave:nth-child(9) {
   animation-delay: 1.6s;
 }
+
 .wave:nth-child(10) {
   animation-delay: 1.8s;
 }
