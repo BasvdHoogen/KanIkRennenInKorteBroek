@@ -3,17 +3,18 @@ import {ref} from 'vue'
 
 const weatherData = ref(null)
 fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo").then((r) => r.json()).then(data => weatherData.value = data)
+// fetch("https://localhost:44301/kortebroekinfo").then((r) => r.json()).then(data => weatherData.value = data)
 // fetch("https://api.open-meteo.com/v1/forecast?latitude=51.4408&longitude=5.4778&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=auto").then((r) => r.json()).then(data => weatherData.value = data)
 
 </script>
 
 <template>
   <div v-if="weatherData != null">
-    <div v-if="weatherData.current.apparent_temperature > 8">
+    <div v-if="weatherData.current != null && weatherData.current.apparent_temperature > 8">
       <h3>JA!</h3>
       Trek je KORTE broek aan. De gevoelstemperatuur is {{ weatherData.current.apparent_temperature }} °C
     </div>
-    <div v-else-if="weatherData.current.apparent_temperature < 8">
+    <div v-else-if="weatherData.current != null && weatherData.current.apparent_temperature < 8">
       <h3>Nee!</h3>
       Trek je LANGE broek aan. De gevoelstemperatuur is {{ weatherData.current.apparent_temperature }} °C
     </div>
@@ -23,7 +24,7 @@ fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo").then((r) => r.j
     </div>
     <br>
     <br>
-    <div>
+    <div v-if="weatherData.current != null">
       <h4>Het weer
         <label v-if="weatherData.requestedLocation">in {{ weatherData.requestedLocation }}</label>
         <label v-else>op coördinaat: {{ weatherData.latitude }}, {{ weatherData.longitude }}</label>
@@ -33,7 +34,7 @@ fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo").then((r) => r.j
       coordinaten: {{ weatherData.latitude }}, {{ weatherData.longitude }}
     </div>
   </div>
-  <div v-else>
+  <div v-if="weatherData == null">
     <br>
     <br>
     <div class="center">
