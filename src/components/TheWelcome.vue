@@ -39,8 +39,8 @@ fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo")
           Coördinaten: {{ weatherData.latitude }}, {{ weatherData.longitude }}<br><br>
           Temperatuur: {{ weatherData.current.temperature_2m }} {{weatherData.current_units.temperature_2m}}<br>
           Gevoelstemperatuur: {{ weatherData.current.apparent_temperature }} {{weatherData.current_units.apparent_temperature}}<br>
-          Wind: {{weatherData.current.wind_speed_10m}} {{weatherData.current_units.wind_speed_10m}}<br>
-          Beschrijving: {{weatherData.current.weather_code_string}}
+          Wind: {{weatherData.current.windspeed_10m}} {{weatherData.current_units.windspeed_10m}}<br>
+          Beschrijving: {{weatherData.current.weathercodeString}}
         </div>
     </div>
     <div v-else>
