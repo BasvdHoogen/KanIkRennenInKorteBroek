@@ -1,12 +1,21 @@
 <script setup xmlns="http://www.w3.org/1999/html" lang="ts">
-import {ref, Ref} from 'vue'
+import {computed, ref, Ref} from 'vue'
 import LoadingWave from "@/components/Loading-wave.vue";
-import {} from "vue";
+import {useRoute} from "vue-router";
+
+const route = useRoute();
+const location: Ref<string> = ref(route.params.location);
+
+const fullFetchUri = computed(() => {
+  let baseUrl: string = "https://kortebroekinfo.azurewebsites.net/kortebroekinfo"
+  return location.value ? `${baseUrl}/?location=${location.value}` : baseUrl;
+});
 
 const weatherData = ref(null)
 const successful: Ref<boolean | null> = ref<boolean>(null)
 const loading: Ref<boolean> = ref<boolean>(true)
-fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo")
+fetch(fullFetchUri.value)
+// fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo?location=")
 // fetch("http://localhost:5195/kortebroekinfo?location=Eindhoven")
     .then((r) => r.json())
     .then((data) => {
@@ -17,6 +26,9 @@ fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo")
 </script>
 
 <template>
+  <div><img src="/man-running-emoji-258749.png" alt="man-running-emoji-with-short-pants"
+            style="width:128px;height:128px;display: flex; margin-left: auto; margin-right: auto;"></div>
+  <h1 class="green">Kan ik in korte broek rennen?</h1>
   <loading-wave v-if="loading" />
   <div v-else>
     <div v-if="successful == true && weatherData != null">
