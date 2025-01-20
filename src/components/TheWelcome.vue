@@ -1,9 +1,10 @@
 <script setup xmlns="http://www.w3.org/1999/html" lang="ts">
-import {computed, ref, Ref} from 'vue'
+import {computed, onMounted, ref, Ref, watch} from 'vue'
 import LoadingWave from "@/components/Loading-wave.vue";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 const location: Ref<string> = ref(route.params.location);
 
 const fullFetchUri = computed(() => {
@@ -14,21 +15,60 @@ const fullFetchUri = computed(() => {
 const weatherData = ref(null)
 const successful: Ref<boolean | null> = ref<boolean>(null)
 const loading: Ref<boolean> = ref<boolean>(true)
-fetch(fullFetchUri.value)
-// fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo?location=")
-// fetch("http://localhost:5195/kortebroekinfo?location=Eindhoven")
-    .then((r) => r.json())
-    .then((data) => {
-      loading.value = false;
-      weatherData.value = data.weatherForecast;
-      successful.value = data.succesfull;
-    })
+const locationInput = ref("")
+
+onMounted(() => {
+  GetWeather();
+})
+
+watch(location, () => {
+  GetWeather();
+})
+
+function GetWeather() {
+
+
+  try{
+      fetch(fullFetchUri.value)
+          // fetch("https://kortebroekinfo.azurewebsites.net/kortebroekinfo?location=")
+          // fetch("http://localhost:5195/kortebroekinfo?location=Eindhoven")
+          .then((r) => r.json())
+          .then((data) => {
+            loading.value = false;
+            weatherData.value = data.weatherForecast;
+            successful.value = data.succesfull;
+          }
+          )
+  }
+  catch (e){
+    console.log("error: " + e);
+    successful.value = false;
+  }
+  finally {
+    loading.value = false;
+  }
+}
+
+function RedirectToLocationUri() {
+  location.value = locationInput.value;
+  router.push({name: 'location', params: {location: locationInput.value}})
+}
+
+function checkIfEnter(event: KeyboardEvent) {
+  if(event.key !== "Enter") return;
+  RedirectToLocationUri();
+}
+
 </script>
 
 <template>
+  <br />
+  <input type="text" v-model="locationInput" placeholder="Zoek een locatie" v-on:keyup="checkIfEnter" /> <button @click="RedirectToLocationUri">Zoek</button>
+  <br /><br />
   <div><img src="/man-running-emoji-258749.png" alt="man-running-emoji-with-short-pants"
             style="width:128px;height:128px;display: flex; margin-left: auto; margin-right: auto;"></div>
   <h1 class="green">Kan ik in korte broek rennen?</h1>
+
   <loading-wave v-if="loading" />
   <div v-else>
     <div v-if="successful == true && weatherData != null">
@@ -45,7 +85,7 @@ fetch(fullFetchUri.value)
         <br>
         <div v-if="weatherData.current != null">
           <h4>Het weer
-            <span v-if="weatherData.requestedLocation">in {{ weatherData.requestedLocation }}</span>
+            <span v-if="weatherData.displayName">in: <br> {{ weatherData.displayName }}</span>
             <span v-else>op coördinaat: {{ weatherData.latitude }}, {{ weatherData.longitude }}</span>
           </h4>
           Coördinaten: {{ weatherData.latitude }}, {{ weatherData.longitude }}<br><br>
