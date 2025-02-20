@@ -72,7 +72,7 @@ function checkIfEnter(event: KeyboardEvent) {
   <loading-wave v-if="loading" />
   <div v-else>
     <div v-if="successful == true && weatherData != null">
-        <div v-if="weatherData.current != null && weatherData.current.apparent_temperature > 8">
+        <div v-if="weatherData.current != null && weatherData.current.apparent_temperature >= 8">
           <h3>JA!</h3>
           Trek je KORTE broek aan. De gevoelstemperatuur is {{ weatherData.current.apparent_temperature }} °C
         </div>
