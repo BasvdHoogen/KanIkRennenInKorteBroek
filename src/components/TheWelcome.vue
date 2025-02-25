@@ -8,8 +8,8 @@ const router = useRouter();
 const location: Ref<string> = ref(route.params.location);
 
 const fullFetchUri = computed(() => {
-  //let baseUrl: string = "https://kortebroekinfo.azurewebsites.net/kortebroekinfo"
-  let baseUrl: string = "http://localhost:5195/kortebroekinfo"
+  let baseUrl: string = "https://kortebroekinfo.azurewebsites.net/kortebroekinfo"
+  // let baseUrl: string = "http://localhost:5195/kortebroekinfo"
   return location.value ? `${baseUrl}/?location=${location.value}` : baseUrl;
 });
 
