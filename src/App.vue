@@ -3,7 +3,8 @@
 
 <template>
   <main>
-    <router-view />
+    <router-view/>
+    <h6>Website: Bas van den Hoogen</h6>
   </main>
 </template>
 
