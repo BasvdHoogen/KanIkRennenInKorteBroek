@@ -27,8 +27,11 @@ watch(location, () => {
 })
 
 function GetWeather() {
+  loading.value = true;
   try{
       fetch(fullFetchUri.value)
+
+
           .then((r) => r.json())
           .then((data) => {
               loading.value = false;
@@ -36,13 +39,18 @@ function GetWeather() {
               successful.value = data.succesfull;
             }
         )
+          .catch(
+              (e => {
+                loading.value = false;
+                console.log("error: " + e);
+                successful.value = false;
+              })
+          )
   }
   catch (e){
+    loading.value = false;
     console.log("error: " + e);
     successful.value = false;
-  }
-  finally {
-    loading.value = false;
   }
 }
 
