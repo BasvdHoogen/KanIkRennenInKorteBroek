@@ -4,7 +4,7 @@
 <template>
   <main>
     <router-view/>
-    <h6>Website: Bas van den Hoogen</h6>
+    <h6><a href="https://www.basvandenhoogen.nl" target="_blank">Website: Bas van den Hoogen</a></h6>
   </main>
 </template>
 
