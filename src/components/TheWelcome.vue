@@ -14,9 +14,11 @@ const fullFetchUri = computed(() => {
 });
 
 const weatherData = ref(null)
+const locationDisplayName = ref(null)
 const successful: Ref<boolean | null> = ref<boolean>(null)
 const loading: Ref<boolean> = ref<boolean>(true)
 const locationInput = ref("")
+const weatherCodeString = ref(null)
 
 onMounted(() => {
   GetWeather();
@@ -30,12 +32,12 @@ function GetWeather() {
   loading.value = true;
   try{
       fetch(fullFetchUri.value)
-
-
           .then((r) => r.json())
           .then((data) => {
               loading.value = false;
               weatherData.value = data.weatherForecast;
+              locationDisplayName.value = data.locationDisplayName;
+              weatherCodeString.value = data.weatherCodeString;
               successful.value = data.succesfull;
             }
         )
@@ -91,14 +93,14 @@ function checkIfEnter(event: KeyboardEvent) {
           <br>
           <div v-if="weatherData.current != null">
             <h4>
-              <span v-if="weatherData.displayName"><b>{{ weatherData.displayName }}</b> </span>
+              <span v-if="locationDisplayName"><b>{{ locationDisplayName }}</b> </span>
               <span v-else> {{ weatherData.latitude }}, {{ weatherData.longitude }}</span>
             </h4>
             <div class="grid">
               <div class="right">Temperatuur: </div><div class="left">{{ weatherData.current.temperature_2m }} {{weatherData.current_units.temperature_2m}}</div>
               <div class="right">Gevoelstemperatuur: </div><div class="left">{{ weatherData.current.apparent_temperature }} {{weatherData.current_units.apparent_temperature}}</div>
               <div class="right">Wind: </div><div class="left">{{weatherData.current.windspeed_10m}} {{weatherData.current_units.windspeed_10m}}</div>
-              <div class="right">Beschrijving: </div><div class="left">{{weatherData.current.weathercodeString}}</div>
+              <div class="right" v-if="weatherCodeString">Beschrijving: </div><div class="left">{{weatherCodeString}}</div>
             </div>
           </div>
       </div>
